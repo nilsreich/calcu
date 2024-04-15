@@ -43,7 +43,7 @@ export default function Home() {
     (mf.current as unknown as MathfieldElement).executeCommand([
       "insert",
       value,
-      { focus: true, selectionMode: "placeholder"},
+      { focus: true, selectionMode: "placeholder" },
     ]);
   };
 
@@ -69,13 +69,13 @@ export default function Home() {
     mf.current?.executeCommand(["deleteAll"]);
   };
   return (
-    <main className="flex flex-col h-svh p-4">
-      <div className="grow  border">
-        <div>{""}</div>
-        <div className="text-4xl p-2 overflow-scroll">
+    <main className="flex flex-col h-svh">
+      <div className="grow flex flex-col  bg-neutral-100">
+        <div className="grow">{""}</div>
+        <div className="text-5xl p-2 overflow-scroll flex justify-end">
           <math-field
             onContextMenu={(event: React.MouseEvent) => event.preventDefault()}
-            style={{ all: "unset", width: "100%", height: "100%" }}
+            style={{ all: "unset" }}
             ref={mf}
             onChange={(event: React.FormEvent<MathfieldElement>) =>
               setInput(event.currentTarget.value)
@@ -84,43 +84,24 @@ export default function Home() {
             {Input}
           </math-field>
         </div>
-        <div className="text-2xl p-2 text-right flex justify-end w-full">
+        <div className="text-3xl p-2 flex justify-end w-full">
           <math-field read-only style={{ all: "unset" }}>
             {result}
           </math-field>
         </div>
       </div>
-      <div>
-        <div className="grid grid-cols-6 gap-2 mt-4">
-          <Button
-            size={"sm"}
-            variant={"outline"}
-            className="uppercase font-semibold"
-            onClick={() => {
-              if (mf.current) {
-                mf.current.executeCommand(["extendToPreviousWord"]);
-                (mf.current as unknown as MathfieldElement).executeCommand([
-                  "insert",
-                  "\\frac {#0} {#1}",
-                  { insertionMode: "replaceSelection", selectionMode: "placeholder" },
-                ]);
-              }
-            }}
-          >
+      <div className="">
+        <div className="grid grid-cols-6 bg-neutral-800 text-neutral-200">
+          <Button size={"lg"} variant={"ghost"}>
             shift
           </Button>
-          <Button
-            size={"sm"}
-            variant={"outline"}
-            className="uppercase font-semibold"
-          >
+          <Button size={"lg"} variant={"ghost"}>
             alpha
           </Button>
           <div className="col-span-2 row-span-3 self-center grid grid-cols-3 grid-rows-3">
             <Button
-              size={"sm"}
-              variant={"secondary"}
-              className="col-start-2"
+              variant={"ghost"}
+              className="col-start-2 text-bl"
               onClick={() => {
                 if (mf.current) {
                   mf.current.executeCommand(["moveUp"]);
@@ -131,8 +112,7 @@ export default function Home() {
               <ArrowUpIcon />
             </Button>
             <Button
-              size={"sm"}
-              variant={"secondary"}
+              variant={"ghost"}
               className="row-start-2"
               onClick={() => {
                 if (mf.current) {
@@ -144,8 +124,7 @@ export default function Home() {
               <ArrowLeftIcon />
             </Button>
             <Button
-              size={"sm"}
-              variant={"secondary"}
+              variant={"ghost"}
               className=" row-start-2 col-start-3"
               onClick={() => {
                 if (mf.current) {
@@ -157,8 +136,7 @@ export default function Home() {
               <ArrowRightIcon />
             </Button>
             <Button
-              size={"sm"}
-              variant={"secondary"}
+              variant={"ghost"}
               className="row-start-3 col-start-2"
               onClick={() => {
                 if (mf.current) {
@@ -170,224 +148,191 @@ export default function Home() {
               <ArrowDownIcon />
             </Button>
           </div>
-          <Button
-            size={"sm"}
-            variant={"outline"}
-            className="uppercase font-semibold"
-          >
-            MENU
+          <Button size={"lg"} variant={"ghost"}>
+            menu
           </Button>
-          <Button
-            size={"sm"}
-            variant={"outline"}
-            className="uppercase font-semibold"
-          >
+          <Button size={"lg"} variant={"ghost"}>
             on
           </Button>
-          <Button
-            size={"sm"}
-            variant={"outline"}
-            className="uppercase font-semibold"
-          >
-            Optn
+          <Button size={"lg"} variant={"ghost"}>
+            optn
           </Button>
-          <Button
-            size={"sm"}
-            variant={"outline"}
-            className="uppercase font-semibold"
-          >
-            CALC
+          <Button size={"lg"} variant={"ghost"}>
+            calc
           </Button>
 
-          <Button
-            size={"sm"}
-            variant={"outline"}
-            className="uppercase font-semibold"
-          >
+          <Button size={"lg"} variant={"ghost"}>
             int
           </Button>
-          <Button
-            size={"sm"}
-            variant={"outline"}
-            className="uppercase font-semibold"
-          >
+          <Button size={"lg"} variant={"ghost"}>
             x
           </Button>
 
-          <Button size={"sm"} variant={"outline"}>
+          <Button size={"lg"} variant={"ghost"}>
             frac
           </Button>
-          <Button
-            size={"sm"}
-            variant={"outline"}
-            className="uppercase font-semibold"
-          >
+          <Button size={"lg"} variant={"ghost"}>
             sqrt
           </Button>
-          <Button
-            size={"sm"}
-            variant={"outline"}
-            className="uppercase font-semibold"
-          >
+          <Button size={"lg"} variant={"ghost"}>
             x^-2
           </Button>
           <Button
-            size={"sm"}
-            variant={"outline"}
+            size={"lg"}
+            variant={"ghost"}
             onClick={() => handleButtonClick("^")}
           >
             x^
           </Button>
-          <Button
-            size={"sm"}
-            variant={"outline"}
-            className="uppercase font-semibold"
-          >
+          <Button size={"lg"} variant={"ghost"}>
             log
           </Button>
-          <Button
-            size={"sm"}
-            variant={"outline"}
-            className="uppercase font-semibold"
-          >
+          <Button size={"lg"} variant={"ghost"}>
             ln
           </Button>
           <Button
-            size={"sm"}
-            variant={"outline"}
+            size={"lg"}
+            variant={"ghost"}
             onClick={() => handleButtonClick("-")}
           >
             (-)
           </Button>
-          <Button
-            size={"sm"}
-            variant={"outline"}
-            className="uppercase font-semibold"
-          >
+          <Button size={"lg"} variant={"ghost"}>
             .,.
           </Button>
-          <Button
-            size={"sm"}
-            variant={"outline"}
-            className="uppercase font-semibold"
-          >
+          <Button size={"lg"} variant={"ghost"}>
             x^-1
           </Button>
-          <Button
-            size={"sm"}
-            variant={"outline"}
-            className="uppercase font-semibold"
-          >
+          <Button size={"lg"} variant={"ghost"}>
             sin
           </Button>
-          <Button
-            size={"sm"}
-            variant={"outline"}
-            className="uppercase font-semibold"
-          >
+          <Button size={"lg"} variant={"ghost"}>
             cos
           </Button>
-          <Button
-            size={"sm"}
-            variant={"outline"}
-            className="uppercase font-semibold"
-          >
+          <Button size={"lg"} variant={"ghost"}>
             tan
           </Button>
-          <Button
-            size={"sm"}
-            variant={"outline"}
-            className="uppercase font-semibold"
-          >
-            STO
+          <Button size={"lg"} variant={"ghost"}>
+            sto
+          </Button>
+          <Button size={"lg"} variant={"ghost"}>
+            eng
           </Button>
           <Button
-            size={"sm"}
-            variant={"outline"}
-            className="uppercase font-semibold"
-          >
-            ENG
-          </Button>
-          <Button
-            size={"sm"}
-            variant={"outline"}
+            size={"lg"}
+            variant={"ghost"}
             onClick={() => handleButtonClick("(")}
           >
             (
           </Button>
           <Button
-            size={"sm"}
-            variant={"outline"}
+            size={"lg"}
+            variant={"ghost"}
             onClick={() => handleButtonClick(")")}
           >
             )
           </Button>
         </div>
-        <div className="grid grid-cols-5 gap-4 ">
-          <div className="grid grid-cols-3 mt-4 gap-4 col-span-3">
+        <div className="grid grid-cols-5 border-t">
+          <div className="grid grid-cols-3 col-span-3">
             {[7, 8, 9, 4, 5, 6, 1, 2, 3, 0].map((num) => (
               <Button
+                className="text-2xl rounded-none h-20"
                 key={num}
-                size={"sm"}
-                className="text-xl font-bold"
+                size={"lg"}
+                variant={"ghost"}
                 onClick={() => handleButtonClick(`${num}`)}
               >
                 {num}
               </Button>
             ))}
-            <Button size={"sm"} className="text-xl font-bold">
+            <Button
+              className="text-2xl rounded-none h-20"
+              size={"lg"}
+              variant={"ghost"}
+            >
               x10x
             </Button>
-            <Button size={"sm"} className="text-xl font-bold">
+            <Button
+              className="text-2xl rounded-none h-20"
+              size={"lg"}
+              variant={"ghost"}
+            >
               Ans
             </Button>
           </div>
-          <div className="grid grid-cols-2 mt-4 gap-4 col-span-2">
+          <div className="grid grid-cols-2 col-span-2">
             <Button
-              className="text-xl font-bold bg-blue-600 text-foreground"
-              size={"sm"}
-              onClick={() => mf?.current?.executeCommand(["deleteBackward"])}
+              className="text-2xl rounded-none h-20 text-pink-600"
+              size={"lg"}
+              onClick={() => {
+                if (mf.current) {
+                  setResult("");
+                  mf.current.executeCommand(["deleteBackward"]);
+
+                  mf.current.focus();
+                }
+              }}
+              variant={"ghost"}
             >
               DEL
             </Button>
             <Button
-              className="text-xl font-bold bg-blue-600 text-foreground"
-              size={"sm"}
+              size={"lg"}
+              className="text-2xl rounded-none h-20 text-pink-600"
+              variant={"ghost"}
               onClick={handleReset}
             >
               AC
             </Button>
             <Button
-              className="text-xl font-bold"
-              size={"sm"}
+              className="text-2xl rounded-none h-20"
+              size={"lg"}
+              variant={"ghost"}
               onClick={() => handleButtonClick("+")}
             >
               +
             </Button>
             <Button
-              className="text-xl font-bold"
-              size={"sm"}
+              className="text-2xl rounded-none h-20"
+              size={"lg"}
+              variant={"ghost"}
               onClick={() => handleButtonClick("-")}
             >
               -
             </Button>
             <Button
-              className="text-xl font-bold"
-              size={"sm"}
+              className="text-2xl rounded-none h-20"
+              variant={"ghost"}
+              size={"lg"}
               onClick={() => handleButtonClick("\\cdot")}
             >
               x
             </Button>
             <Button
-              className="text-xl font-bold"
-              size={"sm"}
-              onClick={() => handleButtonClick("\\frac {#0} {#1}")}
+              className="text-2xl rounded-none h-20"
+              variant={"ghost"}
+              size={"lg"}
+              onClick={() => {
+                if (mf.current) {
+                  mf.current.executeCommand(["extendToPreviousWord"]);
+                  (mf.current as unknown as MathfieldElement).executeCommand([
+                    "insert",
+                    "\\frac {#0} {#1}",
+                    {
+                      insertionMode: "replaceSelection",
+                      selectionMode: "placeholder",
+                    },
+                  ]);
+                }
+              }}
             >
               ÷
             </Button>
             <Button
-              className="text-xl font-bold"
-              size={"sm"}
+              className="text-2xl rounded-none h-20"
+              variant={"ghost"}
+              size={"lg"}
               onClick={() =>
                 mf?.current?.executeCommand(["moveToPreviousChar"])
               }
@@ -396,8 +341,9 @@ export default function Home() {
             </Button>
 
             <Button
-              size={"sm"}
-              className="uppercase font-semibold"
+              className="text-2xl rounded-none h-20 bg-blue-500 text-white"
+              variant={"ghost"}
+              size={"lg"}
               onClick={handleResult}
             >
               =
