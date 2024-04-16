@@ -14,6 +14,8 @@ import {
 } from "mathlive";
 
 import { evaluate } from "mathjs";
+import katex from "katex";
+import "katex/dist/katex.css";
 
 console.log(convertAsciiMathToLatex("x^2 + y^2 = 1"));
 
@@ -51,6 +53,9 @@ export default function Home() {
 
   const handleResult = () => {
     if (mf.current) {
+      console.log(
+          (mf.current as MathfieldElement).getValue() || ""
+      );
       setResult(
         convertAsciiMathToLatex(
           evaluate(
@@ -60,6 +65,7 @@ export default function Home() {
           ).toString()
         )
       );
+      mf.current.focus();
     }
   };
 
@@ -68,40 +74,39 @@ export default function Home() {
     setResult(() => "");
     mf.current?.executeCommand(["deleteAll"]);
   };
+
   return (
-    <main className="flex flex-col h-svh">
-      <div className="grow flex flex-col  bg-neutral-100">
+    <main className="flex flex-col h-svh bg-neutral-300">
+      <div className="grow flex flex-col  p-4 bg-green-100 ">
         <div className="grow">{""}</div>
         <div className="text-5xl p-2 overflow-scroll flex justify-end">
           <math-field
             onContextMenu={(event: React.MouseEvent) => event.preventDefault()}
-            style={{ all: "unset" }}
+            style={{ all: "unset", width: "100vw", paddingTop: "1rem" }}
             ref={mf}
-            onChange={(event: React.FormEvent<MathfieldElement>) =>
-              setInput(event.currentTarget.value)
-            }
           >
-            {Input}
+            {`\\mathsf {${Input}} }`}
           </math-field>
         </div>
-        <div className="text-3xl p-2 flex justify-end w-full">
-          <math-field read-only style={{ all: "unset" }}>
-            {result}
-          </math-field>
-        </div>
+        <div
+          className="text-3xl p-2 flex justify-end w-full"
+          dangerouslySetInnerHTML={{
+            __html: katex.renderToString(`\\mathsf{${result}}`),
+          }}
+        />
       </div>
       <div className="">
-        <div className="grid grid-cols-6 bg-neutral-800 text-neutral-200">
-          <Button size={"lg"} variant={"ghost"}>
+        <div className="grid grid-cols-6 text-neutral-100 bg-neutral-800 ">
+          <Button size={"lg"} variant={"ghost"} className="rounded-none">
             shift
           </Button>
-          <Button size={"lg"} variant={"ghost"}>
+          <Button size={"lg"} variant={"ghost"} className="rounded-none">
             alpha
           </Button>
-          <div className="col-span-2 row-span-3 self-center grid grid-cols-3 grid-rows-3">
+          <div className="col-span-2 row-span-3 self-center grid grid-cols-3 grid-rows-3 bg-gray-600 rounded-2xl">
             <Button
               variant={"ghost"}
-              className="col-start-2 text-bl"
+              className="col-start-2"
               onClick={() => {
                 if (mf.current) {
                   mf.current.executeCommand(["moveUp"]);
@@ -113,7 +118,7 @@ export default function Home() {
             </Button>
             <Button
               variant={"ghost"}
-              className="row-start-2"
+              className="row-start-2 "
               onClick={() => {
                 if (mf.current) {
                   mf.current.executeCommand(["moveToPreviousChar"]);
@@ -137,7 +142,7 @@ export default function Home() {
             </Button>
             <Button
               variant={"ghost"}
-              className="row-start-3 col-start-2"
+              className="row-start-3 col-start-2 "
               onClick={() => {
                 if (mf.current) {
                   mf.current.executeCommand(["moveDown"]);
@@ -148,10 +153,10 @@ export default function Home() {
               <ArrowDownIcon />
             </Button>
           </div>
-          <Button size={"lg"} variant={"ghost"}>
+          <Button size={"lg"} variant={"ghost"} className=" rounded-none">
             menu
           </Button>
-          <Button size={"lg"} variant={"ghost"}>
+          <Button size={"lg"} variant={"ghost"} className=" rounded-none">
             on
           </Button>
           <Button size={"lg"} variant={"ghost"}>
@@ -164,48 +169,148 @@ export default function Home() {
           <Button size={"lg"} variant={"ghost"}>
             int
           </Button>
-          <Button size={"lg"} variant={"ghost"}>
-            x
-          </Button>
+          <Button
+            size={"lg"}
+            variant={"ghost"}
+            onClick={() => handleButtonClick(`x`)}
+            dangerouslySetInnerHTML={{
+              __html: katex.renderToString(`\\mathsf{x}`),
+            }}
+          />
 
           <Button size={"lg"} variant={"ghost"}>
             frac
           </Button>
-          <Button size={"lg"} variant={"ghost"}>
-            sqrt
-          </Button>
-          <Button size={"lg"} variant={"ghost"}>
-            x^-2
-          </Button>
           <Button
             size={"lg"}
             variant={"ghost"}
-            onClick={() => handleButtonClick("^")}
-          >
-            x^
-          </Button>
-          <Button size={"lg"} variant={"ghost"}>
-            log
-          </Button>
-          <Button size={"lg"} variant={"ghost"}>
-            ln
-          </Button>
+            onClick={() => {
+              if (mf.current) {
+                (mf.current as unknown as MathfieldElement).executeCommand([
+                  "insert",
+                  "\\mathsf{\\sqrt {#0}}",
+                ]);
+              }
+            }}
+            dangerouslySetInnerHTML={{
+              __html: katex.renderToString(`\\mathsf{\\sqrt{\\square}}`),
+            }}
+          />
           <Button
             size={"lg"}
             variant={"ghost"}
-            onClick={() => handleButtonClick("-")}
-          >
-            (-)
-          </Button>
+            onClick={() => {
+              if (mf.current) {
+                (mf.current as unknown as MathfieldElement).executeCommand([
+                  "insert",
+                  "\\mathsf{^2}",
+                  { focus: true },
+                ]);
+              }
+            }}
+            dangerouslySetInnerHTML={{
+              __html: katex.renderToString(`\\mathsf{\\square^2}`),
+            }}
+          />
+          <Button
+            size={"lg"}
+            variant={"ghost"}
+            onClick={() => {
+              if (mf.current) {
+                (mf.current as unknown as MathfieldElement).executeCommand([
+                  "insert",
+                  "\\mathsf{^ {#1}}",
+                  { focus: true },
+                ]);
+              }
+            }}
+            dangerouslySetInnerHTML={{
+              __html: katex.renderToString(`\\mathsf{\\square^\\square}`),
+            }}
+          />
+          <Button
+            size={"lg"}
+            variant={"ghost"}
+            onClick={() => {
+              if (mf.current) {
+                (mf.current as unknown as MathfieldElement).executeCommand([
+                  "insert",
+                  "\\mathsf{\\log_{#0}#1}",
+                  { focus: true },
+                ]);
+              }
+            }}
+            dangerouslySetInnerHTML={{
+              __html: katex.renderToString(`\\mathsf{\\log\\square}`),
+            }}
+          />
+          <Button
+            size={"lg"}
+            variant={"ghost"}
+            onClick={() => {
+              if (mf.current) {
+                (mf.current as unknown as MathfieldElement).executeCommand([
+                  "insert",
+                  "\\mathsf{\\ln{#0}",
+                  { focus: true },
+                ]);
+              }
+            }}
+            dangerouslySetInnerHTML={{
+              __html: katex.renderToString(`\\mathsf{\\ln\\square}`),
+            }}
+          />
+          <Button
+            size={"lg"}
+            variant={"ghost"}
+            onClick={() => {
+              if (mf.current) {
+                (mf.current as unknown as MathfieldElement).executeCommand([
+                  "insert",
+                  "\\mathsf{\\log",
+                  { focus: true },
+                ]);
+              }
+            }}
+            dangerouslySetInnerHTML={{
+              __html: katex.renderToString(`\\mathsf{(-)}`),
+            }}
+          />
           <Button size={"lg"} variant={"ghost"}>
             .,.
           </Button>
-          <Button size={"lg"} variant={"ghost"}>
-            x^-1
-          </Button>
-          <Button size={"lg"} variant={"ghost"}>
-            sin
-          </Button>
+          <Button
+            size={"lg"}
+            variant={"ghost"}
+            onClick={() => {
+              if (mf.current) {
+                (mf.current as unknown as MathfieldElement).executeCommand([
+                  "insert",
+                  "\\mathsf{\\log{#0}",
+                  { focus: true },
+                ]);
+              }
+            }}
+            dangerouslySetInnerHTML={{
+              __html: katex.renderToString(`\\mathsf{\\frac{1}{\\square}}`),
+            }}
+          />
+          <Button
+            size={"lg"}
+            variant={"ghost"}
+            onClick={() => {
+              if (mf.current) {
+                (mf.current as unknown as MathfieldElement).executeCommand([
+                  "insert",
+                  "\\mathsf{\\sin{#0}",
+                  { focus: true },
+                ]);
+              }
+            }}
+            dangerouslySetInnerHTML={{
+              __html: katex.renderToString(`\\mathsf{\\sin}`),
+            }}
+          />
           <Button size={"lg"} variant={"ghost"}>
             cos
           </Button>
@@ -221,49 +326,59 @@ export default function Home() {
           <Button
             size={"lg"}
             variant={"ghost"}
-            onClick={() => handleButtonClick("(")}
-          >
-            (
-          </Button>
+            onClick={() => {
+              if (mf.current) {
+                (mf.current as unknown as MathfieldElement).executeCommand([
+                  "insert",
+                  "\\mathsf{(}",
+                  { focus: true },
+                ]);
+              }
+            }}
+            dangerouslySetInnerHTML={{
+              __html: katex.renderToString(`\\mathsf{(}`),
+            }}
+          />
           <Button
             size={"lg"}
             variant={"ghost"}
-            onClick={() => handleButtonClick(")")}
-          >
-            )
-          </Button>
+            onClick={() => {
+              if (mf.current) {
+                (mf.current as unknown as MathfieldElement).executeCommand([
+                  "insert",
+                  "\\mathsf{)}",
+                  { focus: true },
+                ]);
+              }
+            }}
+            dangerouslySetInnerHTML={{
+              __html: katex.renderToString(`\\mathsf{)}`),
+            }}
+          />
         </div>
-        <div className="grid grid-cols-5 border-t">
-          <div className="grid grid-cols-3 col-span-3">
+        <div className="grid grid-cols-5 ">
+          <div className="grid grid-cols-3 col-span-3  bg-neutral-300">
             {[7, 8, 9, 4, 5, 6, 1, 2, 3, 0].map((num) => (
               <Button
-                className="text-2xl rounded-none h-20"
                 key={num}
-                size={"lg"}
-                variant={"ghost"}
-                onClick={() => handleButtonClick(`${num}`)}
-              >
-                {num}
-              </Button>
+                className="h-20"
+                variant={"number"}
+                onClick={() => handleButtonClick(`\\mathsf{${num}}`)}
+                dangerouslySetInnerHTML={{
+                  __html: katex.renderToString(`\\mathsf{${num.toString()}}`),
+                }}
+              />
             ))}
-            <Button
-              className="text-2xl rounded-none h-20"
-              size={"lg"}
-              variant={"ghost"}
-            >
+            <Button className="h-20" variant={"number"}>
               x10x
             </Button>
-            <Button
-              className="text-2xl rounded-none h-20"
-              size={"lg"}
-              variant={"ghost"}
-            >
+            <Button className="h-20" variant={"number"}>
               Ans
             </Button>
           </div>
           <div className="grid grid-cols-2 col-span-2">
             <Button
-              className="text-2xl rounded-none h-20 text-pink-600"
+              className=" rounded-none h-20 bg-orange-400"
               size={"lg"}
               onClick={() => {
                 if (mf.current) {
@@ -279,46 +394,47 @@ export default function Home() {
             </Button>
             <Button
               size={"lg"}
-              className="text-2xl rounded-none h-20 text-pink-600"
+              className="rounded-none h-20 bg-orange-400"
               variant={"ghost"}
               onClick={handleReset}
             >
               AC
             </Button>
             <Button
-              className="text-2xl rounded-none h-20"
-              size={"lg"}
-              variant={"ghost"}
+              className="h-20"
+              variant={"number"}
               onClick={() => handleButtonClick("+")}
-            >
-              +
-            </Button>
+              dangerouslySetInnerHTML={{
+                __html: katex.renderToString(`\\mathsf{+}`),
+              }}
+            />
+
             <Button
-              className="text-2xl rounded-none h-20"
-              size={"lg"}
-              variant={"ghost"}
+              className="h-20"
+              variant={"number"}
               onClick={() => handleButtonClick("-")}
-            >
-              -
-            </Button>
+              dangerouslySetInnerHTML={{
+                __html: katex.renderToString(`\\mathsf{-}`),
+              }}
+            />
             <Button
-              className="text-2xl rounded-none h-20"
-              variant={"ghost"}
-              size={"lg"}
+              className="h-20"
+              variant={"number"}
               onClick={() => handleButtonClick("\\cdot")}
-            >
-              x
-            </Button>
+              dangerouslySetInnerHTML={{
+                __html: katex.renderToString(`\\mathsf{\\times}`),
+              }}
+            />
+
             <Button
-              className="text-2xl rounded-none h-20"
-              variant={"ghost"}
-              size={"lg"}
+              className="h-20"
+              variant={"number"}
               onClick={() => {
                 if (mf.current) {
                   mf.current.executeCommand(["extendToPreviousWord"]);
                   (mf.current as unknown as MathfieldElement).executeCommand([
                     "insert",
-                    "\\frac {#0} {#1}",
+                    "\\mathsf{\\frac {#0} {#1}}",
                     {
                       insertionMode: "replaceSelection",
                       selectionMode: "placeholder",
@@ -326,28 +442,30 @@ export default function Home() {
                   ]);
                 }
               }}
-            >
-              ÷
-            </Button>
-            <Button
-              className="text-2xl rounded-none h-20"
-              variant={"ghost"}
-              size={"lg"}
-              onClick={() =>
-                mf?.current?.executeCommand(["moveToPreviousChar"])
-              }
-            >
-              ,
-            </Button>
+              dangerouslySetInnerHTML={{
+                __html: katex.renderToString(
+                  `\\mathsf{\\frac \\square \\blacksquare}`
+                ),
+              }}
+            />
 
             <Button
-              className="text-2xl rounded-none h-20 bg-blue-500 text-white"
-              variant={"ghost"}
-              size={"lg"}
+              className="h-20"
+              variant={"number"}
+              onClick={() => handleButtonClick(".")}
+              dangerouslySetInnerHTML={{
+                __html: katex.renderToString(`\\mathsf{.}`),
+              }}
+            />
+
+            <Button
+              className="h-20"
+              variant={"number"}
               onClick={handleResult}
-            >
-              =
-            </Button>
+              dangerouslySetInnerHTML={{
+                __html: katex.renderToString(`\\mathsf{=}`),
+              }}
+            />
           </div>
         </div>
       </div>

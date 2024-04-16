@@ -28,7 +28,7 @@ math-field::part(content) {
 #mathlive-suggestion-popover {
   display: none;
 }
-math-field {
+/*math-field {
   --selection-background-color: var(--muted);
   --selection-color: rgb(7, 19, 243);
   --placeholder-color: green;
@@ -40,6 +40,14 @@ math-field {
   --incorrect-color: blue;
   --contains-highlight-background-color: var(--muted);
 }
+*/
+
+math-field {
+  --contains-highlight-background-color: #bbf7d0;
+
+}
+
+
 
 @layer base {
   :root {
