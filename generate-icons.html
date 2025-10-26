@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Icon Generator</title>
+</head>
+<body>
+    <h1>PWA Icon Generator</h1>
+    <p>Generating icons...</p>
+    <div id="canvases"></div>
+    
+    <script>
+        const sizes = [64, 192, 512];
+        const container = document.getElementById('canvases');
+        
+        sizes.forEach(size => {
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            
+            // Create gradient background
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#3B82F6');
+            gradient.addColorStop(1, '#2563EB');
+            
+            // Draw rounded rectangle background
+            const radius = size * 0.225;
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.roundRect(0, 0, size, size, radius);
+            ctx.fill();
+            
+            // Display area
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.beginPath();
+            ctx.roundRect(size * 0.156, size * 0.156, size * 0.688, size * 0.195, size * 0.039);
+            ctx.fill();
+            
+            // Calculator buttons
+            const buttonSize = size * 0.137;
+            const startX = size * 0.156;
+            const startY = size * 0.41;
+            const spacing = size * 0.166;
+            
+            for (let row = 0; row < 3; row++) {
+                for (let col = 0; col < 4; col++) {
+                    ctx.fillStyle = col === 3 ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.9)';
+                    const x = startX + col * spacing;
+                    const y = startY + row * spacing;
+                    ctx.beginPath();
+                    ctx.arc(x + buttonSize/2, y + buttonSize/2, buttonSize/2, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+            
+            // Add download link
+            const link = document.createElement('a');
+            link.download = `pwa-${size}x${size}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.textContent = `Download ${size}x${size} icon`;
+            link.style.display = 'block';
+            link.style.margin = '10px';
+            container.appendChild(link);
+            
+            // Also create maskable version for 512x512
+            if (size === 512) {
+                const linkMaskable = document.createElement('a');
+                linkMaskable.download = `maskable-icon-${size}x${size}.png`;
+                linkMaskable.href = canvas.toDataURL('image/png');
+                linkMaskable.textContent = `Download maskable ${size}x${size} icon`;
+                linkMaskable.style.display = 'block';
+                linkMaskable.style.margin = '10px';
+                container.appendChild(linkMaskable);
+            }
+            
+            // Show preview
+            canvas.style.margin = '10px';
+            canvas.style.border = '1px solid #ccc';
+            container.appendChild(canvas);
+        });
+        
+        // Generate favicon
+        const faviconCanvas = document.createElement('canvas');
+        faviconCanvas.width = 32;
+        faviconCanvas.height = 32;
+        const ctx = faviconCanvas.getContext('2d');
+        
+        const gradient = ctx.createLinearGradient(0, 0, 32, 32);
+        gradient.addColorStop(0, '#3B82F6');
+        gradient.addColorStop(1, '#2563EB');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, 32, 32);
+        
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 20px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('=', 16, 16);
+        
+        const faviconLink = document.createElement('a');
+        faviconLink.download = 'favicon.ico';
+        faviconLink.href = faviconCanvas.toDataURL('image/png');
+        faviconLink.textContent = 'Download favicon.ico';
+        faviconLink.style.display = 'block';
+        faviconLink.style.margin = '10px';
+        faviconLink.style.fontWeight = 'bold';
+        container.insertBefore(faviconLink, container.firstChild);
+    </script>
+</body>
+</html>
